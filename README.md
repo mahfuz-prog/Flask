@@ -1,0 +1,16 @@
+# Flask
+
+
+## Initial commit
+### *Features: Application with Home & About route*
+Packages:
+```
+blinker==1.6.2
+click==8.1.7
+colorama==0.4.6
+Flask==2.3.3
+itsdangerous==2.1.2
+Jinja2==3.1.2
+MarkupSafe==2.1.3
+Werkzeug==2.3.7
+```
