@@ -1,0 +1,24 @@
+{% from 'templates.html' import field_template %}
+{% extends 'layout.html' %}
+{% block body_block %}
+<main class="form-signin mt-5">
+  <form method="POST" action="">
+    <h1 class="h3 mb-3 fw-normal">Registration form</h1>
+
+    {{ form.hidden_tag() }}
+    {{ field_template(form.username, placeholder=form.username.label.text) }}
+    {{ field_template(form.email, placeholder=form.email.label.text) }}
+    {{ field_template(form.password, placeholder=form.password.label.text) }}
+    {{ field_template(form.confirm_password, placeholder=form.confirm_password.label.text) }}
+
+    <div class="form-check mb-3">
+      <input class="form-check-input" type="checkbox" value="" id="flexCheckCheckedDisabled" checked disabled>
+      <label class="form-check-label" for="flexCheckCheckedDisabled">By Sign up, you agree to the terms of use.</label>
+    </div>
+
+    {{ form.submit(class="btn btn-primary") }}
+
+    <p class="mt-5 mb-3 text-body-secondary">&copy; 2023</p>
+  </form>
+</main>
+{% endblock %}

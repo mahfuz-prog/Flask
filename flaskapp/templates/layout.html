@@ -1,3 +1,4 @@
+{% from 'templates.html' import flash_template %}
 <!DOCTYPE html>
 <html>
 <head>
@@ -21,10 +22,13 @@
       <header class="d-flex justify-content-center py-3">
         <ul class="nav nav-pills">
           <li class="nav-item"><a href="{{ url_for('home') }}" class="nav-link active" aria-current="page">Home</a></li>
-          <li class="nav-item"><a href="{{ url_for('about') }}" class="nav-link">About</a></li>
+          <li class="nav-item"><a href="{{ url_for('signup') }}" class="nav-link">Sign up</a></li>
         </ul>
       </header>
     </div>
+  </div>
+  <div class="container block-container">
+    {{ flash_template(get_flashed_messages(with_categories=true)) }}
   </div>
   
   <div class="container block-container">
