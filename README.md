@@ -7,6 +7,7 @@ Packages:
 blinker==1.6.2
 click==8.1.7
 colorama==0.4.6
+email-validator==2.0.0.post2
 Flask==2.3.3
 Flask-Login==0.6.2
 Flask-WTF==1.2.1
