@@ -1,4 +1,4 @@
-# Flask Authentication
+# Flask LoginManager
 
 
 ### *Features: User authentication-flask login, Jinja2-macros-conditions, Signin form-Wtforms *
