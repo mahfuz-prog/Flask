@@ -10,7 +10,6 @@ def home():
 
 @app.route('/signup/', methods=['GET', 'POST'])
 def signup():
-	print(User.query.all())
 	form = SignUp(request.form)
 	if request.method == 'POST' and form.validate():
 		hashed_pass = bcrypt.generate_password_hash(form.password.data, rounds=13).decode('utf-8')
