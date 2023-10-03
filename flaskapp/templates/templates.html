@@ -1,0 +1,23 @@
+{% macro field_template(field) %}
+<div class="form-floating mb-3">
+	{{ field(class='form-control', **kwargs)|safe }}
+    <label for="{{ field.name }}">{{ field.label.text }}</label>
+    <ul>
+    	{% for error in field.errors %}
+    	<li style="color:red;">{{ error }}</li>
+    	{% endfor %}
+    </ul>
+ </div>
+{% endmacro %}
+
+{% macro flash_template(msg) %}
+	{% with messages = msg %}
+		{% if messages %}
+			{% for category, message in messages %}
+			<div class="alert alert-{{ category }}">
+             	{{ message }}
+          	</div>
+			{% endfor %}
+		{% endif %}
+	{% endwith %}
+{% endmacro %}
