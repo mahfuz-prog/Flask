@@ -19,7 +19,7 @@ def login():
 		if (email in users) and (users[email]['password'] == form.password.data):
 			user = User()
 			user.id = email
-			login_user(user, form.remember.data)
+			login_user(user, remember=form.remember.data)
 			flash(f'Logged in as {email}', 'success')
 			next_page = request.args.get('next')
 			return redirect(next_page) if next_page else redirect('/home')
