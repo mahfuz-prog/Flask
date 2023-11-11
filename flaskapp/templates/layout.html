@@ -23,7 +23,6 @@
         <ul class="nav nav-pills">
           <li class="nav-item"><a href="{{ url_for('home') }}" class="nav-link active" aria-current="page">Home</a></li>
           {% if current_user.is_authenticated %}
-            <li class="nav-item"><a href="{{ url_for('secure_page') }}" class="nav-link">Super secure page</a></li>
             <li class="nav-item"><a href="{{ url_for('account') }}" class="nav-link">Account</a></li>
             <li class="nav-item"><a href="{{ url_for('logout') }}" class="nav-link">Logout</a></li>
           {% else %}

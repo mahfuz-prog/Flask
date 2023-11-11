@@ -1,4 +1,3 @@
-import pyotp
 from flaskapp import db, login_manager, s
 from flask_login import UserMixin
 
@@ -13,8 +12,6 @@ class User(db.Model, UserMixin):
 	username = db.Column(db.String(20), unique=True, nullable=False)
 	email = db.Column(db.String(30), unique=True, nullable=False)
 	password = db.Column(db.String(60), nullable=False)
-	otp_secret = db.Column(db.String(32), nullable=True)
-
 
 	#forgot password token
 	def create_token(self):
@@ -28,13 +25,6 @@ class User(db.Model, UserMixin):
 		except:
 			return None
 		return User.query.get(user_id)
-	
-	#otp verification
-	def verify_otp(self, otp):
-		if pyotp.TOTP(self.otp_secret).verify(otp):
-			return True
-		else:
-			return False
 
 	def __repr__(self):
 		return f'username: {self.username} | email: {self.email}'

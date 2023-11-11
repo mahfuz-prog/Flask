@@ -1,4 +1,3 @@
-import pyotp
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, BooleanField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
@@ -58,16 +57,6 @@ class ChangePassword(FlaskForm):
 	def validate_password(self, password):
 		if bcrypt.check_password_hash(current_user.password, password.data):
 			raise ValidationError("Your new password is same as before! change it.")
-
-#OTP form
-class VerifyOTP(FlaskForm):
-	otp = StringField('Enter OTP', validators=[DataRequired()])
-	submit = SubmitField('Verify token')
-
-	def validate_otp(self, otp):
-		if current_user.otp_secret != None:
-			if not pyotp.TOTP(current_user.otp_secret).verify(otp.data):
-				raise ValidationError('Invalid or Expired OTP')
 
 class ResetPasswordRequest(FlaskForm):
 	email = StringField('Reset password email', validators=[DataRequired(), Email()])

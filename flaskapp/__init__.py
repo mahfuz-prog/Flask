@@ -21,10 +21,6 @@ login_manager.login_view = "login"
 login_manager.login_message = u"Login required"
 login_manager.login_message_category = 'info'
 
-login_manager.otp_view = 'verify_otp_form'
-login_manager.otp_message = 'Need to verify otp for access this page'
-login_manager.otp_message_category = 'danger'
-
 s = URLSafeTimedSerializer(app.config['SECRET_KEY'])
 
 #google mail server configuration

@@ -24,14 +24,5 @@
 			</div>
 		</form>
 	</div>
-	<div class="col-6 mt-3">
-		{% if not current_user.otp_secret %}
-		<a class="btn btn-light" href="{{ url_for('enable_two_factor') }}" role="button">Enable 2FA</a>
-		<!-- Modal -->
-		{% else %}
-		<a class="btn btn-light" href="{{ url_for('disable_two_factor') }}" role="button">Disable 2FA</a>
-		{% endif %}
-	</div>
-
 </div>
 {% endblock %}

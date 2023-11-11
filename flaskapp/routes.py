@@ -1,10 +1,9 @@
-import pyotp
 from flaskapp import app, db, bcrypt, s
-from flask import render_template, url_for, flash, redirect, request, abort, session
+from flask import render_template, url_for, flash, redirect, request
 from flaskapp.forms import SignUp, LogIn, ChangeUsername, ChangePassword, ResetPasswordRequest, \
-									ResetPassword, VerifyOTP
+									ResetPassword
 from flaskapp.db_models import User
-from flask_login import login_user, current_user, logout_user, login_required, otp_required
+from flask_login import login_user, current_user, logout_user, login_required
 from flaskapp.message_sender import send_reset_msg, verify_email_msg
 
 @app.route('/')
@@ -80,8 +79,8 @@ def account():
 		db.session.commit()
 		flash(f'Password Changed', 'success')
 		return redirect('/account')
-	return render_template('account.html', title='My Account', change_username_form=change_username_form,\
-	 change_pass_form=change_pass_form)
+	return render_template('account.html', title='My Account', change_username_form=change_username_form, \
+		change_pass_form=change_pass_form)
 
 #forgot password
 @app.route('/forgot-password/', methods=['GET', 'POST'])
@@ -110,62 +109,3 @@ def verify_reset(token):
 		flash(f'Password Changed', 'success')
 		return redirect('/login')
 	return render_template('verify_reset.html', title='Set Password', form=form)
-
-#Enable two factor authentication
-@app.route('/enable-two-factor/', methods=['GET', 'POST'])
-@login_required
-def enable_two_factor():
-	if current_user.otp_secret != None:
-		flash(f'Already enabled','info')
-		return redirect('/account')
-	if current_user.otp_secret is None:
-		#this key sent to template for render with form and get back after form validation
-		key = pyotp.random_base32()
-		form = VerifyOTP()
-		if form.validate_on_submit():
-			#get the key from form
-			key = request.form.get("secret")
-			if pyotp.TOTP(key).verify(form.otp.data):
-				current_user.otp_secret = key
-				db.session.commit()
-				flash(f'Successfuly enabled 2FA', 'success')
-				return redirect('/account')
-			else:
-				flash(f'Invalid or Expired OTP', 'info')
-				return redirect(url_for('enable_two_factor'))
-	return render_template('MultiFA.html', title='Enable multi factor authentication', form=form, secret=key)
-
-@app.route('/disable-two-factor/')
-@login_required
-def disable_two_factor():
-	if current_user.otp_secret is None:
-		flash('Already disabled', 'info')
-		return redirect('/account')
-	if current_user.otp_secret != None:
-		current_user.otp_secret = None
-		db.session.commit()
-		flash('2FA disabled', 'success')
-		return redirect('/account')
-
-#OTP verification
-@app.route('/verify-otp/', methods=['POST', 'get'])
-@login_required
-def verify_otp_form():
-	if current_user.otp_secret is None:
-		flash('2FA disabled. Please enable first', 'info')
-		return redirect('/account/')
-
-	form = VerifyOTP()
-	if form.validate_on_submit():
-		session.pop(f'{current_user.id}_otp', None)
-		session[f'{current_user.id}_otp'] = form.otp.data
-		next_page = request.args.get('next')
-		return redirect(next_page) if next_page else redirect('/account')
-	return render_template('verify_otp.html', title="OTP verification", form=form)
-
-# to access this route need login_required and otp_required
-@app.route('/secure-page/', methods=['GET', 'POST'])
-@login_required
-@otp_required
-def secure_page():
-	return 'secure data'
