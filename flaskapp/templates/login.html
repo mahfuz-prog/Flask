@@ -1,0 +1,20 @@
+{% from 'templates.html' import field_template %}
+{% extends 'layout.html' %}
+{% block body_block %}
+<main class="form-signin mt-5">
+  <form method="POST" action="">
+    <h1 class="h3 mb-3 fw-normal">Login form</h1>
+	    {{ form.hidden_tag() }}
+	    {{ field_template(form.email, placeholder=form.email.label.text) }}
+	    {{ field_template(form.password, placeholder=form.password.label.text) }}
+	    <div class="form-check mb-3">
+				{{ form.remember(class='form-check-input') }}
+		    {{ form.remember.label(class='form-check-label')}}
+			</div>
+	    {{ form.submit(class="btn btn-primary") }}
+  </form>
+  <div class="mt-3">
+  	<a href="{{url_for('forgot_password')}}">Forgot password</a>
+  </div>
+</main>
+{% endblock %}

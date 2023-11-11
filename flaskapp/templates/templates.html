@@ -21,3 +21,12 @@
 		{% endif %}
 	{% endwith %}
 {% endmacro %}
+
+{% macro field_template_single(field) %}
+{{ field(class='form-control', **kwargs)|safe }}
+<ul style="padding-left: 0px;">
+	{% for error in field.errors %}
+	<li style="color:red;">{{ error }}</li>
+	{% endfor %}
+</ul>
+{% endmacro %}

@@ -1,0 +1,17 @@
+{% from 'templates.html' import field_template_single %}
+{% extends 'layout.html' %}
+{% block body_block %}
+<div class='bg-dark p-5' style="border-radius: 5px;">
+	<h4 class='text-white'>Set new password</h4>
+	<div class="col-6 mt-3">
+		<form method="POST">
+			{{ form.hidden_tag() }}
+			<div class="input-group mb-3">
+			  {{ field_template_single(form.password, placeholder=form.password.label.text) }}
+			  {{ field_template_single(form.confirm_password, placeholder=form.confirm_password.label.text) }}
+			  {{ form.submit(class="btn btn-outline-primary") }}	  			  
+			</div>
+		</form>
+	</div>
+</div>
+{% endblock %}

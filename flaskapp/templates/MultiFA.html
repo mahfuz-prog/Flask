@@ -1,0 +1,40 @@
+{% from 'templates.html' import field_template_single %}
+{% from 'templates.html' import field_template %}
+{% extends 'layout.html' %}
+{% block body_block %}
+<div class='bg-dark p-5' style="border-radius: 5px;">
+  <h4 class='text-white'>{{ title }}</h4>
+  <div class="col-6 mt-3">
+    <form>
+      <div class="input-group mb-3">
+        <input type="text" class="form-control" id="secret" value="{{ secret }}" readonly>
+        <button type="button" class="btn btn-primary" onclick="copySecret()">Copy Secret</button>
+      </div>
+    </form>
+    <form method="POST" action="">
+      {{ form.hidden_tag() }}
+      <input type="hidden" name="secret" value="{{ secret }}" required>
+      <div class="input-group mb-3">
+        {{ field_template_single(form.otp, placeholder=form.otp.label.text) }}
+        {{ form.submit(class="btn btn-outline-primary") }}
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+  function copySecret() {
+    /* Get the text field */
+    var copyText = document.getElementById("secret");
+
+    /* Select the text field */
+    copyText.select();
+    copyText.setSelectionRange(0, 99999); /*For mobile devices*/
+
+    /* Copy the text inside the text field */
+    document.execCommand("copy");
+
+    alert("Successfully copied TOTP secret token!");
+  }
+</script>
+{% endblock %}

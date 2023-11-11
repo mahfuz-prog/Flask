@@ -1,7 +1,7 @@
-# Flask
+# Flask Authentication
 
 
-### *Features: Signup form-WTForms, Jinja2-macros, Password hash-Bcrypt, Database sqlite-SQLAlchemy*
+### *Features: User authentication, Email verification-URLSafeTimedSerializer, Flask-mail*
 Packages:
 ```
 bcrypt==4.0.1
