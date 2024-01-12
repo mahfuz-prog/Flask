@@ -2,7 +2,7 @@ from flask_mail import Message
 from flaskapp import mail, s
 from flask import url_for, flash, current_app
 
-#account email confirmation sender
+# account email confirmation sender
 def verify_email_msg(user):
 	token = s.dumps(user)
 	msg = Message('Confirm email', sender='noreply@demo.com', recipients=[user['email']])
@@ -17,7 +17,7 @@ If you did not make this request then simply ignore this email and no changes wi
 	except Exception as e:
 		flash(f"Mail dosen't send. Try again.", 'warning')
 
-#reset password email sender
+# reset password email sender
 def send_reset_msg(user):
 	token = user.create_token()
 	msg = Message('Reset password', sender='noreply@demo.com', recipients=[user.email])

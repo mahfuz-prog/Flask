@@ -13,11 +13,11 @@ class User(db.Model, UserMixin):
 	email = db.Column(db.String(30), unique=True, nullable=False)
 	password = db.Column(db.String(60), nullable=False)
 
-	#forgot password token
+	# forgot password token
 	def create_token(self):
 		return s.dumps({'user_id': self.id})
 
-	#verify forgot password token
+	# verify forgot password token
 	@staticmethod
 	def verify_reset_token(token, max_age=120):
 		try:

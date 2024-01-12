@@ -1,5 +1,7 @@
 from flaskapp.db_models import User
 
+# helps to handle exception while filtering users
+# give the ability to filter user from username or email
 def user_filter(username=None, email=None):
 	try:
 		if username:
@@ -7,4 +9,4 @@ def user_filter(username=None, email=None):
 		if email:
 			return User.query.filter_by(email=email).first()
 	except:
-		return False
+		return None

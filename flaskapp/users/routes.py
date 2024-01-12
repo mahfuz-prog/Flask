@@ -7,6 +7,7 @@ from flask_login import login_user, current_user, logout_user, login_required
 from flaskapp.users.message_sender import send_reset_msg, verify_email_msg
 from flaskapp.users.utils import user_filter
 
+# create bluprint instance
 users = Blueprint('users', __name__)
 
 @users.route('/signup/', methods=['GET', 'POST'])
@@ -47,7 +48,7 @@ def login():
 		if user and bcrypt.check_password_hash(user.password, form.password.data):
 			login_user(user, remember=form.remember.data)
 			next_page = request.args.get('next')
-			return redirect(next_page) if next_page else redirect('/account')
+			return redirect(next_page) if next_page else redirect(url_for('users.account'))
 		else:
 			flash(f'Bad credentials', 'danger')
 	return render_template('login.html', title='Login', form=form)
@@ -79,7 +80,7 @@ def account():
 	return render_template('account.html', title='My Account', change_username_form=change_username_form, \
 		change_pass_form=change_pass_form)
 
-#forgot password
+# forgot password
 @users.route('/forgot-password/', methods=['GET', 'POST'])
 def forgot_password():
 	if current_user.is_authenticated:
@@ -90,7 +91,7 @@ def forgot_password():
 		send_reset_msg(user)
 	return render_template('forgot_password.html', title='Forgot Password', form=form)
 
-#verification route for reset password token
+# verification route for reset password token
 @users.route('/reset/<token>', methods=['GET', 'POST'])
 def verify_reset(token):
 	if current_user.is_authenticated:
@@ -106,10 +107,3 @@ def verify_reset(token):
 		flash(f'Password Changed', 'success')
 		return redirect('/login')
 	return render_template('verify_reset.html', title='Set Password', form=form)
-
-
-@users.route('/get-info')
-def get_info():
-	a = User.query.all()
-	print(a)
-	return 'hola'
