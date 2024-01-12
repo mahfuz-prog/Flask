@@ -1,36 +1,38 @@
-import os
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
 from flask_mail import Mail
 from itsdangerous.url_safe import URLSafeTimedSerializer
+from flaskapp.config import DeploymentConfig, TestConfig
 
-app = Flask(__name__)
-app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
-
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///project.db"
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-db = SQLAlchemy(app)
-
-bcrypt = Bcrypt(app)
-
-login_manager = LoginManager(app)
+config_class = DeploymentConfig
+db = SQLAlchemy()
+bcrypt = Bcrypt()
+login_manager = LoginManager()
 login_manager.session_protection = "strong"
-login_manager.login_view = "login"
+login_manager.login_view = "users.login"
 login_manager.login_message = u"Login required"
 login_manager.login_message_category = 'info'
 
-s = URLSafeTimedSerializer(app.config['SECRET_KEY'])
+mail = Mail()
+s = URLSafeTimedSerializer(config_class.SECRET_KEY)
 
-#google mail server configuration
-app.config['MAIL_SERVER'] = 'smtp.gmail.com'
-app.config['MAIL_PORT'] = 465
-app.config['MAIL_USERNAME'] = os.environ.get('EMAIL_USER') 	#email
-app.config['MAIL_PASSWORD'] = os.environ.get('EMAIL_PASS')	#app password
-app.config['MAIL_USE_TLS'] = False
-app.config['MAIL_USE_SSL'] = True
-mail = Mail(app)
+def create_app(config_class=config_class):
+	app = Flask(__name__)
+	app.config.from_object(config_class)
 
+	db.init_app(app)
+	bcrypt.init_app(app)
+	login_manager.init_app(app)
+	mail.init_app(app)
 
-from flaskapp.routes import app
+	from flaskapp.main.routes import main
+	from flaskapp.users.routes import users
+	app.register_blueprint(main)
+	app.register_blueprint(users)
+
+	with app.app_context():
+		db.create_all()
+	print('Config class: ', config_class)
+	return app

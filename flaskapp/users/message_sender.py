@@ -1,13 +1,13 @@
 from flask_mail import Message
-from flaskapp import s, mail
-from flask import url_for, flash
+from flaskapp import mail, s
+from flask import url_for, flash, current_app
 
 #account email confirmation sender
 def verify_email_msg(user):
 	token = s.dumps(user)
 	msg = Message('Confirm email', sender='noreply@demo.com', recipients=[user['email']])
 	msg.body = f'''To confirm your email, visit the following link:
-{url_for('verification', token=token, _external=True)}
+{url_for('users.verification', token=token, _external=True)}
 
 If you did not make this request then simply ignore this email and no changes will be made.
 '''
@@ -22,7 +22,7 @@ def send_reset_msg(user):
 	token = user.create_token()
 	msg = Message('Reset password', sender='noreply@demo.com', recipients=[user.email])
 	msg.body = f'''To reset your password, visit the following link:
-{url_for('verify_reset', token=token, _external=True)}
+{url_for('users.verify_reset', token=token, _external=True)}
 
 If you did not make this request then simply ignore this email and no changes will be made.
 '''

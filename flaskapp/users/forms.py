@@ -4,6 +4,7 @@ from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationE
 from flaskapp.db_models import User
 from flaskapp import bcrypt
 from flask_login import current_user
+from flaskapp.users.utils import user_filter
 
 class SignUp(FlaskForm):
 	username = StringField('Name', validators=[DataRequired(), Length(min=3, max=20)])
@@ -14,12 +15,12 @@ class SignUp(FlaskForm):
 	submit = SubmitField('Create Account')
 
 	def validate_username(self, username):
-		user = User.query.filter_by(username=username.data).first()
+		user = user_filter(username=username.data)
 		if user:
 			raise ValidationError('Username already taken. Try a different one.')
 
 	def validate_email(self, email):
-		user = User.query.filter_by(email=email.data).first()
+		user = user_filter(email=email.data)
 		if user:
 			raise ValidationError('Email already taken. Try a different one.')
 
@@ -30,7 +31,7 @@ class LogIn(FlaskForm):
 	submit = SubmitField('Login')
 
 	def validate_email(self, email):
-		user = User.query.filter_by(email=email.data).first()
+		user = user_filter(email=email.data)
 		if not user:
 			raise ValidationError('Please register first')
 
@@ -40,7 +41,7 @@ class ChangeUsername(FlaskForm):
 	submit_name = SubmitField('Change username')
 
 	def validate_username(self, username):
-		user = User.query.filter_by(username=username.data).first()
+		user = user_filter(username=username.data)
 		if user:
 			raise ValidationError('Username already taken. Try a different one.')
 
@@ -63,7 +64,7 @@ class ResetPasswordRequest(FlaskForm):
 	submit = SubmitField('Request reset')
 
 	def validate_email(self, email):
-		user = User.query.filter_by(email=email.data).first()
+		user = user_filter(email=email.data)
 		if not user:
 			raise ValidationError('No account associated with this email')
 
@@ -72,4 +73,3 @@ class ResetPassword(FlaskForm):
 	confirm_password = PasswordField('Confirm Password', validators=[DataRequired(),
 		EqualTo('password', message='Passwords must match')])
 	submit = SubmitField('Change password')
-

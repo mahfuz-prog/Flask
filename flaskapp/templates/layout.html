@@ -21,13 +21,13 @@
     <div class="container">
       <header class="d-flex justify-content-center py-3">
         <ul class="nav nav-pills">
-          <li class="nav-item"><a href="{{ url_for('home') }}" class="nav-link active" aria-current="page">Home</a></li>
+          <li class="nav-item"><a href="{{ url_for('main.home') }}" class="nav-link active" aria-current="page">Home</a></li>
           {% if current_user.is_authenticated %}
-            <li class="nav-item"><a href="{{ url_for('account') }}" class="nav-link">Account</a></li>
-            <li class="nav-item"><a href="{{ url_for('logout') }}" class="nav-link">Logout</a></li>
+            <li class="nav-item"><a href="{{ url_for('users.account') }}" class="nav-link">Account</a></li>
+            <li class="nav-item"><a href="{{ url_for('users.logout') }}" class="nav-link">Logout</a></li>
           {% else %}
-            <li class="nav-item"><a href="{{ url_for('signup') }}" class="nav-link">Sign up</a></li>
-            <li class="nav-item"><a href="{{ url_for('login') }}" class="nav-link">Login</a></li>
+            <li class="nav-item"><a href="{{ url_for('users.signup') }}" class="nav-link">Sign up</a></li>
+            <li class="nav-item"><a href="{{ url_for('users.login') }}" class="nav-link">Login</a></li>
           {% endif %}
         </ul>
       </header>

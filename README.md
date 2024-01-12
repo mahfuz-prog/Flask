@@ -1,4 +1,4 @@
-# Flask user login
+# Blueprint
 
 
-### *Features: flask-login, forgot password, flask-mail*
+### *flask Blueprints and Configuration*
