@@ -1,5 +1,5 @@
 from flaskapp import db, bcrypt, s
-from flask import render_template, url_for, flash, redirect, request, Blueprint
+from flask import render_template, url_for, flash, redirect, request, Blueprint, abort
 from flaskapp.users.forms import (SignUp, LogIn, ChangeUsername, ChangePassword, 
 									ResetPasswordRequest, ResetPassword)
 from flaskapp.db_models import User
@@ -26,7 +26,7 @@ def signup():
 @users.route('/verification/<token>')
 def verification(token):
 	if current_user.is_authenticated:
-		return redirect(url_for('main.home'))
+		abort(403)
 	try:
 		load_user = s.loads(token, max_age=3600)
 		user = User(username=load_user['username'], email=load_user['email'], password=load_user['password'])
