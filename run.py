@@ -1,4 +1,4 @@
-from flaskapp import create_app, config_class
+from flaskapp import create_app
 
 app = create_app()
 if __name__ == '__main__':

@@ -33,7 +33,7 @@ def create_app(config_class=config_class):
 	from flaskapp.users.routes import users
 	app.register_blueprint(main)
 	app.register_blueprint(users)
-
+	
 	with app.app_context():
 		db.create_all()
 	print('Config class: ', config_class)
