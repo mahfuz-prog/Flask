@@ -1,0 +1,54 @@
+{% extends 'layout.html' %}
+{% block body_block %}
+<div class='bg-dark p-5 mb-2' style="border-radius: 5px;">
+  <div>
+    <ul class="pagination">
+      {% if posts.has_prev %}
+       <li class="page-item active"><a class="page-link" href="{{ url_for('posts.blog', page=posts.prev_num) }}"> Previous </a></li>
+      {% else %}
+        <li class="page-item disabled"><span class="page-link">Previous</span></li>
+      {% endif %}
+
+      {% for page in posts.iter_pages(left_edge=2, right_edge=2, left_current=1, right_current=2) %}
+        {% if page %}
+          {% if posts.page == page %}
+            <li class="page-item active"><a class="page-link" href="{{ url_for('posts.blog', page=page) }}"> {{ page }} </a></li>
+          {% else %}
+            <li class="page-item"><a class="page-link" href="{{ url_for('posts.blog', page=page) }}"> {{ page }} </a></li>
+          {% endif %}
+        {% else %}
+          ...
+        {% endif %}
+      {% endfor %}
+
+      {% if posts.has_next %} 
+        <li class="page-item active"><a class="page-link" href="{{ url_for('posts.blog', page=posts.next_num) }}"> Next </a></li>
+      {% else %}
+        <li class="page-item disabled">   
+          <span class="page-link">Next</span>      
+        </li>
+      {% endif %}
+    </ul>
+  </div>
+
+  <div class="row mb-2">
+  	{% for post in posts %}
+      <div class="col-md-4 mt-3">
+            <div class="card shadow-sm">
+              <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
+              <div class="card-body">
+                <h4>{{ post.title }}</h4>
+                <p class="card-text">{{ post.description[:90] }} ... </p>
+                <div class="d-flex justify-content-between align-items-center">
+                  <div class="btn-group">
+                    <a href="{{ url_for('posts.read', post_id=post.id) }}" class="btn btn-sm btn-outline-secondary">Read more</a>
+                  </div>
+                  <small class="text-body-secondary">{{ post.date_posted.strftime('%Y-%m-%d') }}</small>
+                </div>
+              </div>
+            </div>
+      </div>
+      {% endfor %}
+    </div>
+</div>
+{% endblock %}

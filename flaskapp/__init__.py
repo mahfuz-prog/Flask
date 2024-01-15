@@ -31,12 +31,15 @@ def create_app(config_class=config_class):
 	# register blueprint to application
 	from flaskapp.main.routes import main
 	from flaskapp.users.routes import users
+	from flaskapp.posts.routes import posts
 	from flaskapp.errors.handlers import errors
 	app.register_blueprint(main)
 	app.register_blueprint(users)
+	app.register_blueprint(posts)
 	app.register_blueprint(errors)
 	
 	with app.app_context():
+		# db.drop_all()
 		db.create_all()
 	print('Config class: ', config_class)
 	return app

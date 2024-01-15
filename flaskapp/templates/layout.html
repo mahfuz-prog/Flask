@@ -22,6 +22,7 @@
       <header class="d-flex justify-content-center py-3">
         <ul class="nav nav-pills">
           <li class="nav-item"><a href="{{ url_for('main.home') }}" class="nav-link active" aria-current="page">Home</a></li>
+          <li class="nav-item"><a href="{{ url_for('posts.blog') }}" class="nav-link" aria-current="page">Blog</a></li>
           {% if current_user.is_authenticated %}
             <li class="nav-item"><a href="{{ url_for('users.account') }}" class="nav-link">Account</a></li>
             <li class="nav-item"><a href="{{ url_for('users.logout') }}" class="nav-link">Logout</a></li>

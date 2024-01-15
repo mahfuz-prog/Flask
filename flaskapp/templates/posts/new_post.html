@@ -1,0 +1,14 @@
+{% from 'templates.html' import field_template_single %}
+{% extends 'layout.html' %}
+{% block body_block %}
+<div class='bg-dark p-5' style="border-radius: 5px;">
+	<div class="col-12 mt-3">
+		<form method="POST">
+			{{ form.hidden_tag() }}
+			{{ field_template_single(form.title, placeholder=form.title.label.text) }}
+			{{ field_template_single(form.description, placeholder=form.description.label.text) }}
+			{{ form.submit(class="btn btn-outline-primary") }}
+		</form>
+	</div>
+</div>
+{% endblock %}
