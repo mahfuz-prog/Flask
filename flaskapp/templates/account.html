@@ -26,10 +26,10 @@
 	</div>
 </div>
 <div class='bg-dark p-5 mt-3' style="border-radius: 5px;">
+	<div class="container mb-2"><a href="{{ url_for('posts.new_post') }}" class="btn btn-outline-primary">Add new post</a></div>
 	{% if current_user.posts == [] %}
 	<p class="text-white">There is no post</p>
 	{% else %}
-	<div class="container mb-2"><a href="{{ url_for('posts.new_post') }}" class="btn btn-outline-primary">Add new post</a></div>
 	{% for post in current_user.posts %}
     <div class="container">
       <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
