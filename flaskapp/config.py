@@ -1,5 +1,4 @@
 import os
-from datetime import timedelta
 
 class DeploymentConfig():
 	SECRET_KEY = os.environ.get('SECRET_KEY')
@@ -14,6 +13,4 @@ class DeploymentConfig():
 	MAIL_USE_SSL = True
 
 class TestConfig(DeploymentConfig):
-	SECRET_KEY = 'hola'
-	PERMANENT_SESSION_LIFETIME = timedelta(minutes=5)
 	SQLALCHEMY_DATABASE_URI = "sqlite:///test.db"

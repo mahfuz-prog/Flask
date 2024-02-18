@@ -6,20 +6,17 @@ from flask_mail import Mail
 from itsdangerous.url_safe import URLSafeTimedSerializer
 from flaskapp.config import DeploymentConfig, TestConfig
 
-# application factory
-config_class = DeploymentConfig
-
 mail = Mail()
 db = SQLAlchemy()
 bcrypt = Bcrypt()
-s = URLSafeTimedSerializer(config_class.SECRET_KEY)
+s = URLSafeTimedSerializer('secret key')
 login_manager = LoginManager()
 login_manager.session_protection = "strong"
 login_manager.login_view = "users.login"
 login_manager.login_message = u"Login required"
 login_manager.login_message_category = 'info'
 
-def create_app(config_class=config_class):
+def create_app(config_class=DeploymentConfig):
 	app = Flask(__name__)
 	app.config.from_object(config_class)
 
@@ -38,8 +35,4 @@ def create_app(config_class=config_class):
 	app.register_blueprint(posts)
 	app.register_blueprint(errors)
 	
-	with app.app_context():
-		# db.drop_all()
-		db.create_all()
-	print('Config class: ', config_class)
 	return app

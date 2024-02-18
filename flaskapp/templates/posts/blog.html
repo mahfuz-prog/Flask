@@ -41,7 +41,7 @@
                 <p class="card-text">{{ post.description[:90] }} ... </p>
                 <div class="d-flex justify-content-between align-items-center">
                   <div class="btn-group">
-                    <a href="{{ url_for('posts.read', post_id=post.id) }}" class="btn btn-sm btn-outline-secondary">Read more</a>
+                    <a href="{{ url_for('posts.read', post_id=post.id, title=post.title.replace(' ', '-')) }}" class="btn btn-sm btn-outline-secondary">Read more</a>
                   </div>
                   <small class="text-body-secondary">{{ post.date_posted.strftime('%Y-%m-%d') }}</small>
                 </div>

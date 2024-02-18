@@ -34,9 +34,9 @@
     <div class="container">
       <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
          <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-          <li><a href="{{ url_for('posts.read', post_id=post.id) }}" class="nav-link px-2 text-white">Title: {{ post.title }}</a></li>
-          <li><a href="{{ url_for('posts.read', post_id=post.id) }}" class="nav-link px-2 text-white"></a></li>
-          <li><a href="{{ url_for('posts.read', post_id=post.id) }}" class="nav-link px-2 text-white">Date: {{ post.date_posted.strftime('%Y-%m-%d') }}</a></li>
+          <li><a href="{{ url_for('posts.read', post_id=post.id, title=post.title.replace(' ', '-')) }}" class="nav-link px-2 text-white">Title: {{ post.title }}</a></li>
+          <li><a href="{{ url_for('posts.read', post_id=post.id, title=post.title.replace(' ', '-')) }}" class="nav-link px-2 text-white"></a></li>
+          <li><a href="{{ url_for('posts.read', post_id=post.id, title=post.title.replace(' ', '-')) }}" class="nav-link px-2 text-white">Date: {{ post.date_posted.strftime('%Y-%m-%d') }}</a></li>
         </ul>
 
         <div class="text-end">

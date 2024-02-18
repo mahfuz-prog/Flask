@@ -4,7 +4,8 @@ from datetime import datetime
 
 @login_manager.user_loader
 def user_loader(user_id):
-    user = User.query.get(int(user_id))
+    # user = User.query.get(int(user_id)int(user_id))
+    user = db.session.get(User, int(user_id))
     return user
 
 class User(db.Model, UserMixin):
@@ -26,7 +27,8 @@ class User(db.Model, UserMixin):
 			user_id = s.loads(token, max_age=max_age)['user_id']
 		except:
 			return None
-		return User.query.get(user_id)
+		# return User.query.get(user_id)
+		return db.session.get(User, int(user_id))
 
 	def __repr__(self):
 		return f'username: {self.username} | email: {self.email}'

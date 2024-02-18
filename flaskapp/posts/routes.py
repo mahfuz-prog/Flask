@@ -1,23 +1,25 @@
-from flask import Blueprint, render_template, request, redirect, url_for, flash, abort
-from flask_login import current_user
+from flask import Blueprint, render_template, request, redirect, url_for, flash, abort, session
+from flask_login import current_user, login_required
 from flaskapp.posts.forms import NewPost, EditPost
 from flaskapp.db_models import Post
 from flaskapp import db
 
-posts = Blueprint('posts', __name__)
+posts = Blueprint('posts', __name__, url_prefix='/posts')
 
-@posts.route('/Blog/')
+@posts.route('/')
 def blog():
 	page = request.args.get('page', 1, type=int)
 	posts = Post.query.order_by(Post.date_posted.desc()).paginate(page=page, per_page=9)
 	return render_template('posts/blog.html', title='Blog', posts=posts)
 
 # add new post
-@posts.route('/new-post/', methods=['GET', 'POST'])
+@posts.route('/new/', methods=['GET', 'POST'])
+@login_required
 def new_post():
 	form = NewPost()
 	if request.method == 'POST' and form.validate_on_submit():
-		post = Post(title=form.title.data, description=form.description.data, author=current_user)
+		title = form.title.data.replace('-', ' ')
+		post = Post(title=title, description=form.description.data, author=current_user)
 		db.session.add(post)
 		try:
 			db.session.commit()
@@ -29,24 +31,28 @@ def new_post():
 	return render_template('posts/new_post.html', title='New Post', form=form)
 
 # single post page
-@posts.route('/read/<int:post_id>')
-def read(post_id):
+@posts.route('/<int:post_id>/<title>/')
+def read(post_id, title):
 	post = Post.query.get_or_404(post_id)
-	return render_template('posts/single_post.html', title='Single post page', post=post)
+	# check the title if it containing valid data or not
+	if title.replace('-', ' ') not in post.title:
+		abort(404)
+	return render_template('posts/single_post.html', title=title, post=post)
 
 # edit a post
 @posts.route('/edit/<int:post_id>', methods=['GET', 'POST'])
+@login_required
 def edit_post(post_id):
 	post = Post.query.get_or_404(post_id)
 	if post.author != current_user:
-		abort(403)
+		abort(401)
 	form = EditPost()
 	if form.validate_on_submit():
 		post.title = form.title.data
 		post.description = form.description.data
 		db.session.commit()
 		flash('Post updated', 'info')
-		return redirect(url_for('posts.read', post_id=post_id))
+		return redirect(url_for('posts.read', post_id=post_id, title=post.title.replace(' ', '-')))
 	elif request.method == 'GET':
 		form.title.data = post.title
 		form.description.data = post.description
@@ -54,10 +60,11 @@ def edit_post(post_id):
 
 # delete a post
 @posts.route('/delete/<int:post_id>', methods=['GET', 'POST'])
+@login_required
 def delete_post(post_id):
 	post = Post.query.get_or_404(post_id)
 	if post.author != current_user:
-		abort(403)
+		abort(401)
 	db.session.delete(post)
 	db.session.commit()
 	flash(f'{post.title} Deleted', 'success')

@@ -38,14 +38,32 @@ def verification(token):
 		flash(f'Account already exist, Timeout or Invalid token', 'warning')
 	return redirect('/home')
 
+# @users.route('/login/', methods=['GET', 'POST'])
+# def login():
+# 	if current_user.is_authenticated:
+# 		return redirect(url_for('main.home'))
+# 	form = LogIn()
+# 	if request.method == 'POST' and form.validate_on_submit():
+# 		user = user_filter(email=form.email.data)
+# 		if user and bcrypt.check_password_hash(user.password, form.password.data):
+# 			login_user(user, remember=form.remember.data)
+# 			next_page = request.args.get('next')
+# 			return redirect(next_page) if next_page else redirect(url_for('users.account'))
+# 		else:
+# 			flash(f'Bad credentials', 'danger')
+# 	return render_template('login.html', title='Login', form=form)
+
 @users.route('/login/', methods=['GET', 'POST'])
 def login():
 	if current_user.is_authenticated:
 		return redirect(url_for('main.home'))
 	form = LogIn()
 	if request.method == 'POST' and form.validate_on_submit():
-		user = user_filter(email=form.email.data)
-		if user and bcrypt.check_password_hash(user.password, form.password.data):
+		email = request.form.get('email')
+		password = request.form.get('password')
+		
+		user = user_filter(email=email)
+		if user and bcrypt.check_password_hash(user.password, password):
 			login_user(user, remember=form.remember.data)
 			next_page = request.args.get('next')
 			return redirect(next_page) if next_page else redirect(url_for('users.account'))

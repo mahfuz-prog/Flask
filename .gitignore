@@ -2,3 +2,5 @@
 __pycache__/
 instance/
 *.pyc
+.pytest_cache/
+tests/
